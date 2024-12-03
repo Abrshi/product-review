@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/endPoint';
+import { AxiosError } from 'axios';
 
 const AddProductForm: React.FC = () => {
   const navigate = useNavigate();
@@ -82,10 +83,15 @@ const AddProductForm: React.FC = () => {
       if (response.data.product) {
         navigate(`/product/${response.data.product.id}`);
       }
-    } catch (err) {
-      setError(err.response?.data?.message || 'Error adding product');
+    }catch (err) {
+      const errorMessage =
+        typeof err === 'object' && err !== null && 'message' in err
+          ? (err as any).message
+          : 'Error adding product';
+      setError(errorMessage);
       setLoading(false);
     }
+    
   };
 
   if (loading) return <div>Loading...</div>;
