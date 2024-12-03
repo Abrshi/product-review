@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/endPoint';
-import { AxiosError } from 'axios';
 
 const AddProductForm: React.FC = () => {
   const navigate = useNavigate();
