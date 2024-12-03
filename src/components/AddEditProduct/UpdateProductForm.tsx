@@ -224,7 +224,12 @@ const UpdateProductForm: React.FC = () => {
       <input
         type="datetime-local"
         name="expiresAt"
-        value={new Date(product.expiresAt).toISOString().slice(0, 16)}
+        value={
+          product.expiresAt
+            ? new Date(product.expiresAt).toISOString().slice(0, 16)
+            : ""
+        }
+        
         onChange={handleInputChange}
         className="border border-gray-300 rounded-lg p-3 focus:ring focus:ring-blue-300"
         required

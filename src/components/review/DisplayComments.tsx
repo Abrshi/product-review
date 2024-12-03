@@ -3,21 +3,21 @@ import axiosInstance from "../../api/endPoint";
 
 interface Review {
   id: string;
-  reviewerName?: string;
+  productId: string;
+  reviewerName?: string | undefined; // Ensure this matches the definition of Comment
   rating: number;
   comment: string;
+  createdAt: string;
 }
 
 interface DisplayCommentsProps {
-  productId: string;
   reviews: Review[];
   setReviews: React.Dispatch<React.SetStateAction<Review[]>>;
 }
 
 const DisplayComments: React.FC<DisplayCommentsProps> = ({ reviews, setReviews }) => {
   const handleDelete = (reviewId: string) => {
-    axiosInstance
-      .delete(`/reviews/${reviewId}`)
+    axiosInstance.delete(`/reviews/${reviewId}`)
       .then(() => {
         setReviews((prev) => prev.filter((review) => review.id !== reviewId));
       })
@@ -32,7 +32,7 @@ const DisplayComments: React.FC<DisplayCommentsProps> = ({ reviews, setReviews }
         reviews.map((review) => (
           <div key={review.id} className="border p-4 rounded shadow">
             <p>
-              <strong>{review.reviewerName || "Anonymous"}</strong>
+              <strong>{review.reviewerName || ""}</strong>
             </p>
             <p>Rating: {review.rating} / 5</p>
             <p>{review.comment}</p>

@@ -47,8 +47,7 @@ const Reviews = ({ productId }: { productId: string }) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-
-    if (newReview.rating <= 0 || newReview.rating > 5) {
+    if (Number(newReview.rating) <= 0 || Number(newReview.rating) > 5) {
       setError("Rating must be a number between 1 and 5.");
       return;
     }

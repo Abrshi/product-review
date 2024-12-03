@@ -29,8 +29,8 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({ productId, onCommentAdd
     e.preventDefault();
     setError(null);
 
-    if (newReview.rating <= 0 || newReview.rating > 5) {
-      setError("Rating must be a number between 1 and 5.");
+    if (Number(newReview.rating) <= 0 || Number(newReview.rating) > 5) {
+           setError("Rating must be a number between 1 and 5.");
       return;
     }
     if (!newReview.comment.trim()) {

@@ -24,10 +24,10 @@ interface Product {
   updatedAt: string;
 }
 
-interface Comment {
+interface Review {
   id: string;
   productId: string;
-  reviewerName: string;
+  reviewerName?: string | undefined; // Ensure this matches the definition of Comment
   rating: number;
   comment: string;
   createdAt: string;
@@ -50,7 +50,7 @@ function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]); // Changed to Review[]
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<boolean>(false);
@@ -59,15 +59,15 @@ function ProductDetail() {
     const fetchProductData = async () => {
       try {
         setLoading(true);
-        const [productResponse, commentsResponse] = await Promise.all([
+        const [productResponse, reviewsResponse] = await Promise.all([
           axiosInstance.get(`/products/${id}`),
           axiosInstance.get(`/reviews/${id}`),
         ]);
         setProduct(productResponse.data);
-        setComments(commentsResponse.data);
+        setReviews(reviewsResponse.data); // Set reviews here
       } catch (err) {
         console.error("Error fetching data:", err);
-        setError("Failed to load product details or comments.");
+        setError("Failed to load product details or reviews.");
       } finally {
         setLoading(false);
       }
@@ -85,14 +85,18 @@ function ProductDetail() {
       await axiosInstance.delete(`/products/${id}`);
       navigate("/");
     } catch (err) {
-      console.error("Error deleting product:", err.response?.data || err.message);
+      const error = err as any; // Or define a more specific type
+      console.error("Error deleting product:", error.response?.data || error.message);
     } finally {
       setDeleting(false);
     }
   };
 
-  const handleCommentAdded = (newComment: Comment) => {
-    setComments((prevComments) => [...prevComments, newComment]);
+  const handleReviewAdded = (newReview: Review) => {
+    setReviews((prevReviews) => [
+      ...prevReviews,
+      { ...newReview, reviewerName: newReview.reviewerName || "" } // Set reviewerName to empty string if undefined
+    ]);
   };
 
   if (loading) return <div className="text-center py-10">Loading product details...</div>;
@@ -117,23 +121,7 @@ function ProductDetail() {
               <p className="text-xl text-green-600 font-semibold mb-4">
                 Price: {product.price} Birr
               </p>
-              <p className="text-gray-700 mb-1">Category: {product.category}</p>
-              <p className="text-gray-700 mb-1">Use: {product.use}</p>
-              <p className="text-gray-700 mb-1">Minimum Quantity: {product.minimumQuantity}</p>
-              <p className="text-gray-700 mb-1">Selling Price: {product.sellingPrice}</p>
-              <p className="text-gray-700 mb-1">Discount: {product.discount}%</p>
-              <p className="text-gray-700 mb-1">Quantity on Hand: {product.quantityOnHand}</p>
-              <p className="text-gray-700 mb-1">Reserved Quantity: {product.reservedQuantity}</p>
-              <p className="text-gray-700 mb-1">Added By: {product.addedBy}</p>
-              <p className="text-gray-700 mb-1 text-xs">
-                Expires At: {new Date(product.expiresAt).toLocaleDateString()}
-              </p>
-              <p className="text-gray-700 mb-1 text-xs">
-                Created At: {new Date(product.createdAt).toLocaleDateString()}
-              </p>
-              <p className="text-gray-700 mb-1 text-xs">
-                Updated At: {new Date(product.updatedAt).toLocaleDateString()}
-              </p>
+              <Tags tags={product.tags} />
               <div className="flex m-1 p-10 gap-10">
                 <Link
                   to={`/products/${id}`}
@@ -144,25 +132,24 @@ function ProductDetail() {
                 <button
                   onClick={handleDelete}
                   disabled={deleting}
-                  className={`bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ${
-                    deleting ? "opacity-50" : ""
-                  }`}
+                  className={`bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ${deleting ? "opacity-50" : ""}`}
                 >
                   {deleting ? "Deleting..." : "Delete Product"}
                 </button>
               </div>
-              <Tags tags={product.tags} />
             </div>
           </div>
 
           <div className="mt-8">
-            <h2 className="text-xl font-bold mb-4">Add a Comment</h2>
-            <AddCommentForm productId={product.id} onCommentAdded={handleCommentAdded} />
+            <h2 className="text-xl font-bold mb-4">Add a Review</h2>
+            <AddCommentForm productId={product.id} onCommentAdded={handleReviewAdded} />
           </div>
 
           <div className="mt-8">
-            <h2 className="text-xl font-bold mb-4">Comments</h2>
-            <DisplayComments reviews={comments} setReviews={setComments} />
+            <h2 className="text-xl font-bold mb-4">Reviews</h2>
+            <DisplayComments
+             reviews={reviews}
+             setReviews={setReviews} />
           </div>
         </>
       )}
