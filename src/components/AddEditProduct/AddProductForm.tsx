@@ -50,6 +50,13 @@ const AddProductForm: React.FC = () => {
       setImageInput('');
     }
   };
+  const handleRemoveImage = (index: number) => {
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      imageUrls: prevProduct.imageUrls.filter((_, i) => i !== index),
+    }));
+  };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -285,34 +292,42 @@ const AddProductForm: React.FC = () => {
 
       {/* Image URLs */}
       <div>
-        <label className="block font-bold">Image URLs:</label>
-        <div className="flex space-x-2">
-          <input
-            type="text"
-            value={imageInput}
-            onChange={(e) => setImageInput(e.target.value)}
-            className="border rounded p-2 flex-grow"
-            placeholder="Add an image URL"
-          />
-          <button
-            type="button"
-            onClick={handleAddImage}
-            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-          >
-            Add Image
-          </button>
-        </div>
-        <div className="mt-2 space-x-2">
-          {product.imageUrls.map((url, index) => (
-            <span
-              key={index}
-              className="inline-block bg-gray-200 px-2 py-1 rounded text-sm"
-            >
-              {url}
-            </span>
-          ))}
-        </div>
+  <label className="block font-bold">Image URLs:</label>
+  <div className="flex space-x-2">
+    <input
+      type="text"
+      value={imageInput}
+      onChange={(e) => setImageInput(e.target.value)}
+      className="border rounded p-2 flex-grow"
+      placeholder="Add an image URL"
+    />
+    <button
+      type="button"
+      onClick={handleAddImage}
+      className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+    >
+      Add Image
+    </button>
+  </div>
+  <div className="mt-2 space-y-2">
+    {product.imageUrls.map((url, index) => (
+      <div
+        key={index}
+        className="flex items-center space-x-2 bg-gray-200 px-2 py-1 rounded text-sm"
+      >
+        <span className="flex-grow">{url}</span>
+        <button
+          type="button"
+          onClick={() => handleRemoveImage(index)}
+          className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+        >
+          Remove
+        </button>
       </div>
+    ))}
+  </div>
+</div>
+
 
       {/* Submit Button */}
       <button

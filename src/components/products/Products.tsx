@@ -130,9 +130,10 @@ function Products() {
 
         {/* Sidebar */}
             <div
-            className={`h-[100vh] sticky top-16  bg-white shadow-lg p-6 transition-transform duration-300 ${
-                isSidebarOpen ? "translate-x-0" : "-translate-x-full h-[100vh] sticky top-16"
-            }  md:translate-x-0 md:w-1/5 h-[100vh] sticky top-16`}// Replace overflow-y-auto with overflow-hidden
+            className={`h-[100vh] sticky top-16 bg-white shadow-lg p-6 transition-transform duration-300 ${
+                isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+              } max-sm:absolute  md:translate-x-0 md:w-1/5 lg:sticky`}
+              // Replace overflow-y-auto with overflow-hidden
             >
           <h2 className="text-xl font-semibold text-gray-800 mb-6">
             Filter Products
@@ -249,7 +250,7 @@ function Products() {
                   <img
                     src={info.imageUrls}
                     alt={info.name}
-                    className="h-56 w-auto object-cover rounded-lg mb-4"
+                    className="h-56 w-auto m-auto object-cover rounded-lg mb-4"
                   />
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">
                     {info.name}

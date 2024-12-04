@@ -104,56 +104,85 @@ function ProductDetail() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      {product && (
-        <>
-          <div className="flex gap-8 flex-col sm:flex-row">
-            <div className="w-full sm:w-1/2">
-              <img
-                src={product.imageUrls[0]}
-                alt={product.name}
-                className="w-full h-auto rounded-lg shadow-md"
-              />
-            </div>
+  {product && (
+    <>
+      <div className="flex  flex-col sm:flex-row">
+        <div className="w-full sm:w-1/2">
+          <img
+            src={product.imageUrls[0]}
+            alt={product.name}
+            className="w-80 h-auto rounded-lg shadow-md"
+          />
+        </div>
 
-            <div className="w-full sm:w-1/2">
-              <h1 className="text-2xl font-bold text-gray-800 mb-4">{product.name}</h1>
-              <p className="text-lg text-gray-600 mb-4">{product.description}</p>
-              <p className="text-xl text-green-600 font-semibold mb-4">
-                Price: {product.price} Birr
-              </p>
-              <Tags tags={product.tags} />
-              <div className="flex m-1 p-10 gap-10">
-                <Link
-                  to={`/products/${id}`}
-                  className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
-                >
-                  Edit Product
-                </Link>
-                <button
-                  onClick={handleDelete}
-                  disabled={deleting}
-                  className={`bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ${deleting ? "opacity-50" : ""}`}
-                >
-                  {deleting ? "Deleting..." : "Delete Product"}
-                </button>
-              </div>
-            </div>
-          </div>
+        <div className="w-full sm:w-1/2">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">{product.name}</h1>
+          <p className="text-lg text-gray-600 mb-4">{product.description}</p>
+          <p className="text-xl text-green-600 font-semibold mb-4">
+            Price: {product.price} Birr
+          </p>
+          <p className="text-md text-gray-700 mb-4">
+            <strong>Category:</strong> {product.category}
+          </p>
+          <p className="text-md text-gray-700 mb-4">
+            <strong>Usage:</strong> {product.use}
+          </p>
+          <p className="text-md text-gray-700 mb-4">
+            <strong>Minimum Quantity:</strong> {product.minimumQuantity}
+          </p>
+          <p className="text-md text-gray-700 mb-4">
+            <strong>Selling Price:</strong> {product.sellingPrice}
+          </p>
+          <p className="text-md text-gray-700 mb-4">
+            <strong>Added By:</strong> {product.addedBy}
+          </p>
+          <p className="text-md text-gray-700 mb-4">
+            <strong>Expires At:</strong> {new Date(product.expiresAt).toLocaleDateString()}
+          </p>
+          <p className="text-md text-gray-700 mb-4">
+            <strong>Quantity on Hand:</strong> {product.quantityOnHand}
+          </p>
+          <p className="text-md text-gray-700 mb-4">
+            <strong>Reserved Quantity:</strong> {product.reservedQuantity}
+          </p>
+          <p className="text-md text-gray-700 mb-4">
+            <strong>Discount:</strong> {product.discount}%
+          </p>
+          <Tags tags={product.tags} />
 
-          <div className="mt-8">
-            <h2 className="text-xl font-bold mb-4">Add a Review</h2>
-            <AddCommentForm productId={product.id} onCommentAdded={handleReviewAdded} />
+          <div className="flex m-1 p-10 gap-10">
+            <Link
+              to={`/products/${id}`}
+              className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+            >
+              Edit Product
+            </Link>
+            <button
+              onClick={handleDelete}
+              disabled={deleting}
+              className={`bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ${
+                deleting ? "opacity-50" : ""
+              }`}
+            >
+              {deleting ? "Deleting..." : "Delete Product"}
+            </button>
           </div>
+        </div>
+      </div>
 
-          <div className="mt-8">
-            <h2 className="text-xl font-bold mb-4">Reviews</h2>
-            <DisplayComments
-             reviews={reviews}
-             setReviews={setReviews} />
-          </div>
-        </>
-      )}
-    </div>
+      <div className="mt-8">
+        <h2 className="text-xl font-bold mb-4">Add a Review</h2>
+        <AddCommentForm productId={product.id} onCommentAdded={handleReviewAdded} />
+      </div>
+
+      <div className="mt-8">
+        <h2 className="text-xl font-bold mb-4">Reviews</h2>
+        <DisplayComments reviews={reviews} setReviews={setReviews} />
+      </div>
+    </>
+  )}
+</div>
+
   );
 }
 
