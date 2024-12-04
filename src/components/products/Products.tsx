@@ -244,7 +244,7 @@ function Products() {
             filteredProducts.map((info) => (
               <div
                 key={info.id}
-                className="h-80 w-72 bg-cover bg-center bg-no-repeat rounded-lg p-4 flex flex-col items-center mb-10"
+                className="h-80 w-72 bg-cover bg-center bg-no-repeat rounded-lg p-4 flex flex-col items-center mb-10 bg-white p-6 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out m-5"
               >
                 <Link to={`/product/${info.id}`} className="w-full">
                   <img
